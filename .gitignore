@@ -1,0 +1,33 @@
+Compiled frontend assets
+
+/public/build
+/public/hot
+/public/storage
+Dependencies
+
+/node_modules
+/vendor
+Environment files
+
+.env
+.env.backup
+.env.production
+.env.staging
+IDE helper files and caches
+
+.idea
+.vscode
+/.fleet
+.php-cs-fixer.cache
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+Log and temporary files
+
+npm-debug.log
+yarn-error.log
+storage/logs/.log
+storage/framework/cache/data/
+storage/framework/sessions/*
+storage/framework/testing/*
+storage/framework/views/*.php

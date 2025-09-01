@@ -1,0 +1,57 @@
+services:
+  # Laravel Application Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cyber-labs-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    # Add the Vite port mapping here
+    ports:
+      - "5173:5173"
+    networks:
+      - cyber-labs-network
+
+  # Nginx Web Server Service
+  nginx:
+    image: nginx:alpine
+    container_name: cyber-labs-nginx
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - cyber-labs-network
+    depends_on:
+      - app
+
+  # PostgreSQL Database Service
+  db:
+    image: postgres:13-alpine
+    container_name: cyber-labs-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-laravel}
+      POSTG-RES_USER: ${DB_USERNAME:-laravel}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
+    volumes:
+      - cyber-labs-db-data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432" # Keep the updated port from our last fix
+    networks:
+      - cyber-labs-network
+
+# Docker Networks
+networks:
+  cyber-labs-network:
+    driver: bridge
+
+# Docker Volumes (for data persistence)
+volumes:
+  cyber-labs-db-data:
+    driver: local
